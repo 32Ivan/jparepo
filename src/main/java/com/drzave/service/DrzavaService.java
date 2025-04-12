@@ -10,7 +10,9 @@ import com.drzave.repository.KontinentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.InternalException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,26 +38,35 @@ public class DrzavaService {
 
     public DrzavaDto findById(Long id){
         Drzava drzava = drzavaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Država s ID " + id + " nije pronađena"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Država s ID " + id + " nije pronađena"));
         return drzavaMapper.toDTO(drzava);
     }
 
-    public DrzavaDto create(CreateDrzavaDto dto){
+    public DrzavaDto create(CreateDrzavaDto dto) {
         Kontinent kontinent = kontinentRepository.findByNaziv(dto.getKontinent());
 
         if (kontinent == null) {
-            throw new RuntimeException("Kontinent nije pronađen");
+            kontinent = kontinentRepository.findByNaziv("Nepoznat");
+
+            if (kontinent == null) {
+                // Ako ni "Nepoznat" ne postoji, možeš ga kreirati
+                kontinent = new Kontinent();
+                kontinent.setNaziv("Nepoznat");
+                kontinent = kontinentRepository.save(kontinent);
+            }
         }
 
-        Drzava d  = new Drzava();
+        Drzava d = new Drzava();
         d.setNaziv(dto.getNaziv());
         d.setBrojStanovnika(dto.getBrojStanovnika());
         d.setKontinent(kontinent);
 
         return drzavaMapper.toDTO(drzavaRepository.save(d));
     }
+
+
     public DrzavaDto update(Long id, CreateDrzavaDto dto) {
-        Drzava drzava = drzavaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Država nije pronađena"));
+        Drzava drzava = drzavaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Država nije pronađena"));
 
         // Ažuriranje podataka
         drzava.setNaziv(dto.getNaziv());
@@ -72,7 +83,7 @@ public class DrzavaService {
 
     public void delete(Long id){
         if (!drzavaRepository.existsById(id)){
-            throw new InternalException("Drzava nije pronadena");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Država nije pronađena");
         }
         drzavaRepository.deleteById(id);
     }

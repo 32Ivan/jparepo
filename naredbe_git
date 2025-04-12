@@ -1,0 +1,42 @@
+Radite na projektu "TaskManager". U mapi projek ta nalaze se datoteke:
+- TaskManager.java
+- ChangeLog.txt
+Vas zadatak je sljedeéi:
+1. Inicijalizirati novi Git repozitorij u direktoriju projekta.
+2. Dodati datoteku TaskManager.java u podruje za pripremu (staging area).
+3. Spremiti promiene s porukom "Inicijalna verzija TaskManager aplikacije".
+4. Kreirati novu granu pod nazivom feature-update i prebaciti se na nju.
+5. Dodati datoteku Changelog.txt i spremiti jes porukom "Dodana povijest promena".
+6. Povezati projekt s udaljenim repozitorijem na GitHubu s URL-om
+https://github.com/polaznik/TaskManager.git.
+7. Prenijeti sve promiene s grane feature-update na udaljeni repozitorii.
+Koji je tocan redoslijed koraka i koje naredbe treba izvrsiti za svaki korak?
+Napisite ispravan redoslijed i naredbe.
+(Primjer upisa odgovora: 3. (naredba...), 5. (naredba...), 2. (naredba...)
+
+
+
+Evo točnog redoslijeda koraka i odgovarajućih Git naredbi:
+
+Inicijalizirati novi Git repozitorij u direktoriju projekta:
+git init
+
+Dodati datoteku TaskManager.java u područje za pripremu (staging area):
+git add TaskManager.java
+
+
+Spremiti promjene s porukom "Inicijalna verzija TaskManager aplikacije":
+git commit -m "Inicijalna verzija TaskManager aplikacije"
+
+
+Kreirati novu granu pod nazivom feature-update i prebaciti se na nju:
+git checkout -b feature-update
+
+Dodati datoteku ChangeLog.txt i spremiti je s porukom "Dodana povijest promjena":
+git add ChangeLog.txt && git commit -m "Dodana povijest promjena"
+
+Povezati projekt s udaljenim repozitorijem na GitHubu:
+git remote add origin https://github.com/polaznik/TaskManager.git
+
+Prenijeti sve promjene s grane feature-update na udaljeni repozitorij:
+git push -u origin feature-update
