@@ -1,0 +1,47 @@
+✅PUT (ažuriranje postojećeg resursa)
+Klijent šalje kompletne podatke o resursu koji želi ažurirati, najčešće na URL oblika /resurs/{id}.
+
+Backend prima podatke, validira ih i provjerava postoji li resurs s tim ID-em.
+
+Ako postoji, podaci se ažuriraju u bazi. Ako ne postoji, najčešće se vraća 404 Not Found, iako neke implementacije mogu automatski kreirati resurs (upsert).
+
+U slučaju grešaka u validaciji, vraća se 400 Bad Request.
+
+Ako je ažuriranje uspješno, vraća se 200 OK ili 204 No Content.
+
+---------------------
+
+✅ POST (kreiranje novog resursa)
+Klijent šalje podatke za novi resurs na URL kolekcije, npr. /resursi.
+
+Backend validira podatke i kreira novi zapis u bazi.
+
+Ako je sve u redu, vraća se 201 Created te opcionalno Location header s URL-om novog resursa.
+
+Ako su podaci neispravni, vraća se 400 Bad Request.
+
+Ako dođe do greške na serveru prilikom spremanja, vraća se 500 Internal Server Error.
+
+-------------------------------------
+
+✅ GET (dohvaćanje resursa)
+Klijent šalje zahtjev za dohvat pojedinačnog (/resurs/{id}) ili više resursa (/resursi).
+
+Backend traži podatke u bazi i vraća ih u JSON formatu.
+
+Ako traženi resurs ne postoji, vraća se 404 Not Found.
+
+Ako sve prođe u redu, vraća se 200 OK.
+
+-------------------------------------
+
+✅ DELETE (brisanje resursa)
+Klijent šalje zahtjev za brisanje određenog resursa, npr. /resurs/{id}.
+
+Backend provjerava postoji li taj resurs i ako postoji, briše ga iz baze.
+
+Ako resurs ne postoji, vraća se 404 Not Found.
+
+Ako je brisanje uspješno, vraća se 204 No Content (bez tijela odgovora).
+
+U slučaju greške prilikom brisanja (npr. referencijalni integritet), može se vratiti 409 Conflict ili 500 Internal Server Error.
